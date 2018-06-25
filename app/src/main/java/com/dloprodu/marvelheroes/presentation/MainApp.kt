@@ -10,10 +10,16 @@ import com.dloprodu.marvelheroes.di.modules.ApplicationModule
  */
 class MainApp : Application() {
 
-    val component: ApplicationComponent by lazy {
-        DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
-    }
+    lateinit var component: ApplicationComponent
 
+    override fun onCreate() {
+        super.onCreate()
+        // Stetho.initializeWithDefaults(this)
+
+        // DI
+        component =
+                DaggerApplicationComponent.builder()
+                        .applicationModule(ApplicationModule(this))
+                        .build()
+    }
 }

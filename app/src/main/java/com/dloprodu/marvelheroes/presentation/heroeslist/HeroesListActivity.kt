@@ -1,5 +1,8 @@
 package com.dloprodu.marvelheroes.presentation.heroeslist
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
@@ -7,21 +10,21 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import android.widget.Toast
 import com.dloprodu.marvelheroes.R
-import com.dloprodu.marvelheroes.di.components.DaggerGetMarvelHeroesListComponent
-import com.dloprodu.marvelheroes.di.modules.GetMarvelHeroesListModule
 import com.dloprodu.marvelheroes.domain.model.MarvelHeroEntity
 import com.dloprodu.marvelheroes.presentation.MainApp
-import com.dloprodu.marvelheroes.util.mvvm.Navigator
+import com.dloprodu.marvelheroes.util.Navigator
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class HeroesListActivity : AppCompatActivity(), HeroesListContract.View {
+class HeroesListActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigator: Navigator
 
     @Inject
-    lateinit var presenter: HeroesListPresenter
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var heroesListViewModel: HeroesListViewModel
 
     lateinit var adapter: HeroesListAdapter
 
@@ -33,16 +36,12 @@ class HeroesListActivity : AppCompatActivity(), HeroesListContract.View {
     }
 
     fun inject() {
-        DaggerGetMarvelHeroesListComponent.builder()
-                .applicationComponent((application as MainApp).component)
-                .getMarvelHeroesListModule(GetMarvelHeroesListModule(this))
-                .build()
-                .inject(this)
+        (application as MainApp).component.inject(this)
     }
 
     private fun setUp() {
+        setUpViewModel()
         setUpRecycler()
-        presenter.loadMarvelHeroes()
     }
 
     private fun setUpRecycler() {
@@ -52,28 +51,43 @@ class HeroesListActivity : AppCompatActivity(), HeroesListContract.View {
         heroesListRecycler.adapter = adapter
     }
 
+    private fun setUpViewModel() {
+        heroesListViewModel = ViewModelProviders.of(this, viewModelFactory).get(HeroesListViewModel::class.java)
+        bindEvents()
+        heroesListViewModel.loadHeroesList()
+    }
+
+    private fun bindEvents() {
+        heroesListViewModel.isLoadingState.observe(this, Observer { isLoading ->
+            isLoading?.let {
+                showLoading(it)
+            }
+        })
+
+        heroesListViewModel.userListState.observe(this, Observer { userList ->
+            userList?.let {
+                showHeroesList(it)
+            }
+        })
+    }
+
     private fun goToHeroDetail(hero: MarvelHeroEntity, image: View) {
         navigator.goToHeroDetail(this, hero, image)
     }
 
-    override fun showLoading(isLoading: Boolean) {
+    fun showLoading(isLoading: Boolean) {
         heroesListLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
     }
 
-    override fun showHeroesList(heroes: List<MarvelHeroEntity>) {
+    fun showHeroesList(heroes: List<MarvelHeroEntity>) {
         adapter.swapData(heroes)
     }
 
-    override fun onDestroy() {
-        presenter.destroy()
-        super.onDestroy()
-    }
-
-    override fun showError(message: String) {
+    fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    override fun showError(messageRes: Int) {
+    fun showError(messageRes: Int) {
         Toast.makeText(this, messageRes, Toast.LENGTH_LONG).show()
     }
 

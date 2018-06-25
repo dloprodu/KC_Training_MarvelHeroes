@@ -1,8 +1,6 @@
 package com.dloprodu.marvelheroes.presenter
 
 import com.dloprodu.marvelheroes.domain.usecase.GetMarvelHeroesList
-import com.dloprodu.marvelheroes.presentation.heroeslist.HeroesListContract
-import com.dloprodu.marvelheroes.presentation.heroeslist.HeroesListPresenter
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify

@@ -3,7 +3,7 @@ package com.dloprodu.marvelheroes.di.modules
 import android.app.Application
 import android.content.Context
 import com.dloprodu.marvelheroes.presentation.MainApp
-import com.dloprodu.marvelheroes.util.mvvm.Navigator
+import com.dloprodu.marvelheroes.util.Navigator
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

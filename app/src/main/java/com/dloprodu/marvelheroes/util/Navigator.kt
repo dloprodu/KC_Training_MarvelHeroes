@@ -1,4 +1,4 @@
-package com.dloprodu.marvelheroes.util.mvvm
+package com.dloprodu.marvelheroes.util
 
 import android.app.Activity
 import android.content.Intent
