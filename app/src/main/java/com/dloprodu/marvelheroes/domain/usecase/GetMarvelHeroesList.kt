@@ -9,6 +9,6 @@ class GetMarvelHeroesList @Inject constructor(val marvelHeroesRepositoryImpl: Ma
     : UseCase<List<MarvelHeroEntity>>() {
 
     override fun buildCase(): Observable<List<MarvelHeroEntity>> =
-            marvelHeroesRepositoryImpl.getMarvelHeroesListFromApi()
+            marvelHeroesRepositoryImpl.getMarvelHeroesList()
 
 }

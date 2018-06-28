@@ -15,7 +15,7 @@ class LocalMarvelHeroesDataSource(private val heroDatabase: MarvelHeroDatabase):
                     .getAllHeroes()
                     .toObservable()
 
-    fun saveUsers(heroes: List<MarvelHeroEntity>) {
+    fun saveHeroes(heroes: List<MarvelHeroEntity>) {
         Observable.fromCallable {
             heroDatabase.getHeroDao().removeAndInsertHeroes(heroes)
         }
