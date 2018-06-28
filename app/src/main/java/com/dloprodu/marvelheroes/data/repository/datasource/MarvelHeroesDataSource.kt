@@ -1,6 +1,6 @@
 package com.dloprodu.marvelheroes.data.repository.datasource
 
-import com.dloprodu.marvelheroes.data.model.MarvelHero
+import com.dloprodu.marvelheroes.domain.model.MarvelHeroEntity
 import io.reactivex.Observable
 
 /**
@@ -8,6 +8,6 @@ import io.reactivex.Observable
  */
 interface MarvelHeroesDataSource {
 
-    fun getMarvelHeroesList(): Observable<List<MarvelHero>>
+    fun getMarvelHeroesList(): Observable<List<MarvelHeroEntity>>
 
 }

@@ -1,16 +1,17 @@
 package com.dloprodu.marvelheroes.di.modules
 
+import android.arch.persistence.room.Room
+import android.content.Context
 import com.dloprodu.marvelheroes.data.model.mapper.MarvelHeroMapper
 import com.dloprodu.marvelheroes.data.net.MarvelHeroesService
 import com.dloprodu.marvelheroes.data.repository.MarvelHeroesRepositoryImpl
+import com.dloprodu.marvelheroes.data.repository.datasource.LocalMarvelHeroesDataSource
 import com.dloprodu.marvelheroes.data.repository.datasource.RemoteMarvelHeroesDataSource
+import com.dloprodu.marvelheroes.domain.db.MarvelHeroDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-/**
- * Created by dloprodu on 17/03/2018.
- */
 @Module
 class DataModule {
 
@@ -18,17 +19,31 @@ class DataModule {
     @Singleton
     fun provideMarvelHeroMapper(): MarvelHeroMapper = MarvelHeroMapper()
 
+    @Singleton
+    @Provides
+    fun provideDatabase(context: Context): MarvelHeroDatabase =
+            Room.databaseBuilder(context, MarvelHeroDatabase::class.java, "hero.db").build()
+
     @Provides
     @Singleton
-    fun provideRemoteMarvelHeroesDataSoruce(marvelHeroesService: MarvelHeroesService)
+    fun provideRemoteMarvelHeroesDataSoruce(
+            marvelHeroesService: MarvelHeroesService,
+            marvelHeroMapper: MarvelHeroMapper)
             : RemoteMarvelHeroesDataSource =
-            RemoteMarvelHeroesDataSource(marvelHeroesService)
+            RemoteMarvelHeroesDataSource(marvelHeroesService, marvelHeroMapper)
+
+    @Provides
+    @Singleton
+    fun provideLocalMarvelHeroesDataSoruce(
+            database: MarvelHeroDatabase)
+            : LocalMarvelHeroesDataSource =
+            LocalMarvelHeroesDataSource(database)
 
     @Provides
     @Singleton
     fun provideMarvelHeroesRepository(
-            marvelRemoteMarvelHeroesDataSource: RemoteMarvelHeroesDataSource,
-            marvelHeroMapper: MarvelHeroMapper): MarvelHeroesRepositoryImpl =
-            MarvelHeroesRepositoryImpl(marvelRemoteMarvelHeroesDataSource, marvelHeroMapper)
+            remoteMarvelHeroesDataSource: RemoteMarvelHeroesDataSource,
+            localMarvelHeroesDataSource: LocalMarvelHeroesDataSource): MarvelHeroesRepositoryImpl =
+            MarvelHeroesRepositoryImpl(remoteMarvelHeroesDataSource, localMarvelHeroesDataSource)
 
 }
