@@ -1,6 +1,5 @@
 package com.dloprodu.marvelheroes.data.repository.datasource
 
-import com.dloprodu.marvelheroes.data.model.MarvelHero
 import com.dloprodu.marvelheroes.data.model.mapper.MarvelHeroMapper
 import com.dloprodu.marvelheroes.data.net.MarvelHeroesService
 import com.dloprodu.marvelheroes.domain.model.MarvelHeroEntity
