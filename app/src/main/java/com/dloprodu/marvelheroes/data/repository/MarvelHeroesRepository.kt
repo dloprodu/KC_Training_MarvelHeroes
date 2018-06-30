@@ -12,7 +12,7 @@ interface MarvelHeroesRepository {
 
     fun getMarvelHeroesListFromDb(): Observable<List<MarvelHeroEntity>>
 
-    fun getFavorite(name: String): Observable<List<FavoriteHeroEntity>>
+    fun getAllFavorites(): Observable<List<FavoriteHeroEntity>>
 
     fun markMarvelHeroAsFavorite(favorite: FavoriteHeroEntity)
 

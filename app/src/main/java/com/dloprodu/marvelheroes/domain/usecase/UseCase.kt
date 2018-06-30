@@ -12,7 +12,11 @@ abstract class UseCase<T> {
 
     abstract fun buildCase(): Observable<T>
 
-    fun execute(onSuccess: (value: T) -> Unit, onError: (t: Throwable) -> Unit = {}, onLoading: () -> Unit, onComplete: () -> Unit) {
+    fun execute(
+            onSuccess: (value: T) -> Unit,
+            onError: (t: Throwable) -> Unit = {},
+            onLoading: () -> Unit,
+            onComplete: () -> Unit) {
         buildCase()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

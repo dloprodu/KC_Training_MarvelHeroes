@@ -25,10 +25,10 @@ class LocalMarvelHeroesDataSource(
                 .subscribe()
     }
 
-    fun getFavorite(name: String): Observable<List<FavoriteHeroEntity>> =
+    fun getAllFavorites(): Observable<List<FavoriteHeroEntity>> =
             heroDatabase
                     .getFavoriteDao()
-                    .getFavorites(name)
+                    .getAllFavorites()
                     .toObservable()
 
     fun saveFavorite(favorite: FavoriteHeroEntity) {

@@ -23,8 +23,8 @@ class MarvelHeroesRepositoryImpl(private val remoteMarvelHeroesDataSource: Remot
             localMarvelHeroesDataSource
                     .getMarvelHeroesList()
 
-    override fun getFavorite(name: String): Observable<List<FavoriteHeroEntity>> {
-        return localMarvelHeroesDataSource.getFavorite(name)
+    override fun getAllFavorites(): Observable<List<FavoriteHeroEntity>> {
+        return localMarvelHeroesDataSource.getAllFavorites()
     }
 
     override fun markMarvelHeroAsFavorite(favorite: FavoriteHeroEntity) {

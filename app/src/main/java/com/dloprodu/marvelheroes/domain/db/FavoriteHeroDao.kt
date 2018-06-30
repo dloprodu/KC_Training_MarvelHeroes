@@ -7,8 +7,8 @@ import io.reactivex.Maybe
 @Dao
 abstract class FavoriteHeroDao {
 
-    @Query("SELECT * FROM favorites WHERE name = :name")
-    abstract fun getFavorites(name: String): Maybe<List<FavoriteHeroEntity>>
+    @Query("SELECT * FROM favorites")
+    abstract fun getAllFavorites(): Maybe<List<FavoriteHeroEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(favorite: FavoriteHeroEntity)
